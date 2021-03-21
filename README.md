@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.com/hamzahamidi/angular-forum.svg?branch=master)](https://travis-ci.com/hamzahamidi/angular-forum)
-[![GitHub release](https://img.shields.io/github/release/hamzahamidi/angular-forum.svg)](https://github.com/hamzahamidi/angular-forum/releases/latest)
 [![GitHub license](https://img.shields.io/github/license/hamzahamidi/angular-forum.svg)](https://github.com/hamzahamidi/angular-forum)
 
 
@@ -13,21 +11,20 @@
 This codebase was created to demonstrate a fully fledged application built with Angular that interacts with an actual backend server including CRUD operations, authentication, routing, pagination, and more.
 
 
-# Getting started
+# Comment démarrer
 
-Make sure you have the [Angular CLI](https://github.com/angular/angular-cli#installation) installed globally. 
+- Si pas déjà fait installer nodejs (version récente)
+- Si pas déjà fait installer gloablement [Angular CLI](https://github.com/angular/angular-cli#installation) 
+Commande à utiliser: _npm i -g @angular/cli_ 
 
-We use [Yarn](https://yarnpkg.com) to manage the dependencies, so we strongly recommend you to use Yarn. you can install it from [Here](https://yarnpkg.com/en/docs/install), then run `yarn install --frozen-lockfile` to resolve all dependencies (might take a minute).
+Pour lancer l'application localement lancer `ng serve` et naviguer vers `http://localhost:4200/`. 
+L'application se rechargera automatiquement à chaque changement dans le code source. 
 
-Or, you can use npm the default package manager of NodeJs & install the dependencies with `npm install`.
+# Builder le project en mode production
+Exécuter `ng build`. 
+Le résultat du build se trouvera dans le répertoire `dist/`.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-### Building the project
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
-
-
-## Functionality overview
+# Functionality overview
 
 The example application is a social blogging site (i.e. a Medium.com clone). You can view a live demo over at http://hamidihamza.com/angular-forum/
 
