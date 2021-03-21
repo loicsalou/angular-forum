@@ -42,7 +42,7 @@ export class MessageListComponent {
 
     this.messagesService.query(this.query).subscribe((data) => {
       this.loading = false;
-      this.results = data.messages;
+      this.results = data.messages || [];
 
       // Used from http://www.jstips.co/en/create-range-0...n-easily-using-one-line/
       this.totalPages = Array.from(new Array(Math.ceil(data.messagesCount / this.limit)), (val, index) => index + 1);

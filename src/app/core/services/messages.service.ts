@@ -6,7 +6,7 @@ import { ApiService } from './api.service';
 import { Message, MessageListConfig } from '../models';
 import { map } from 'rxjs/operators';
 
-export const MESSAGE_PATH = '/articles'; // CAVUS ==> /messages
+export const MESSAGE_PATH = '/messages';
 
 @Injectable()
 export class MessagesService {
@@ -14,17 +14,17 @@ export class MessagesService {
 
   query(config: MessageListConfig): Observable<{ messages: Message[]; messagesCount: number }> {
     // Convert any filters over to Angular's URLSearchParams
-    const params = {};
+    const params = { offset: '0', limit: '10', tag: 'loire' };
 
     Object.keys(config.filters).forEach((key) => {
-      params[key] = config.filters[key];
+      params[key] = '' + config.filters[key];
     });
 
     return this.apiService
       .get(MESSAGE_PATH + (config.type === 'feed' ? '/feed' : ''), new HttpParams({ fromObject: params }))
       .pipe(
-        map((articles) => {
-          return { messages: articles.articles, messagesCount: articles.articlesCount };
+        map((result) => {
+          return { messages: result.messages, messagesCount: result.articlesCount };
         })
       );
   }
