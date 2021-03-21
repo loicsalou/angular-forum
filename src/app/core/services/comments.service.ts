@@ -19,7 +19,7 @@ export class CommentsService {
     return this.apiService.get(`/articles/${slug}/comments`).pipe(map((data) => data.comments));
   }
 
-  destroy(commentId, articleSlug) {
-    return this.apiService.delete(`/articles/${articleSlug}/comments/${commentId}`);
+  destroy(commentId, messageSlug) {
+    return this.apiService.delete(`/articles/${messageSlug}/comments/${commentId}`);
   }
 }
