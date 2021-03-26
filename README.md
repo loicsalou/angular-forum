@@ -29,6 +29,7 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 ## Functionality overview
 
+
 The example application is a social blogging site (i.e. a Medium.com clone). You can view a live demo over at http://hamidihamza.com/angular-forum/
 
 **General functionality:**
