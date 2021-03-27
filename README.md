@@ -1,7 +1,5 @@
-# Forum cavusvinifera
-Ce forum est un fork de http://hamidihamza.com/angular-forum/
-La licence nous permet d'utiliser, modifier, utiliser etc. pourvu qu'on nomme l'origine du code (à remettre, je l'ai 
-enlevée par erreur).
+[![GitHub license](https://img.shields.io/github/license/hamzahamidi/angular-forum.svg)](https://github.com/hamzahamidi/angular-forum)
+
 
 # Mise en route rapide
 
