@@ -1,60 +1,14 @@
-[![Build Status](https://travis-ci.com/hamzahamidi/angular-forum.svg?branch=master)](https://travis-ci.com/hamzahamidi/angular-forum)
-[![GitHub release](https://img.shields.io/github/release/hamzahamidi/angular-forum.svg)](https://github.com/hamzahamidi/angular-forum/releases/latest)
-[![GitHub license](https://img.shields.io/github/license/hamzahamidi/angular-forum.svg)](https://github.com/hamzahamidi/angular-forum)
+# Forum cavusvinifera
+Ce forum est un fork de http://hamidihamza.com/angular-forum/
+La licence nous permet d'utiliser, modifier, utiliser etc. pourvu qu'on nomme l'origine du code (à remettre, je l'ai 
+enlevée par erreur).
 
+# Mise en route rapide
 
-> ### Angular project containing real world examples (CRUD, auth, advanced patterns, etc).
+- [Angular CLI](https://github.com/angular/angular-cli#installation) doit être installé globalement: __npm i -g 
+@angular/cli__ 
+- Checkouter le repository
+- depuis la racine du projet (le répertoire où se trouve le package.json), installer les dépendances: __npm i__
+- lancer le projet localement avec la commande __npm start__
 
-# ![Angular Forum App](logo.png)
-
-
-### [Demo](http://hamidihamza.com/angular-forum)&nbsp;&nbsp;&nbsp;&nbsp;
-
-This codebase was created to demonstrate a fully fledged application built with Angular that interacts with an actual backend server including CRUD operations, authentication, routing, pagination, and more.
-
-
-# Getting started
-
-Make sure you have the [Angular CLI](https://github.com/angular/angular-cli#installation) installed globally. 
-
-We use [Yarn](https://yarnpkg.com) to manage the dependencies, so we strongly recommend you to use Yarn. you can install it from [Here](https://yarnpkg.com/en/docs/install), then run `yarn install --frozen-lockfile` to resolve all dependencies (might take a minute).
-
-Or, you can use npm the default package manager of NodeJs & install the dependencies with `npm install`.
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-### Building the project
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
-
-
-## Functionality overview
-
-
-The example application is a social blogging site (i.e. a Medium.com clone). You can view a live demo over at http://hamidihamza.com/angular-forum/
-
-**General functionality:**
-
-- Authenticate users via JWT (login/signup pages + logout button on settings page)
-- CRU* users (sign up & settings page - no deleting required)
-- CRUD messages
-- CR*D Comments on messages (no updating required)
-- GET and display paginated lists of messages
-- Favorite messages
-- Follow other users
-
-**The general page breakdown looks like this:**
-
-- Home page (URL: /#/ )
-    - List of tags
-    - List of messages pulled from either Feed, Global, or by Tag
-    - Pagination for list of messages
-- Settings page (URL: /#/settings )
-- Editor page to create/edit messages (URL: /#/editor, /#/editor/message-slug-here )
-- Message page (URL: /#/message/message-slug-here )
-    - Delete message button (only shown to message's author)
-    - Render markdown from server client side
-    - Comments section at bottom of page
-    - Delete comment button (only shown to comment's author)
-- Profile page (URL: /#/profile/:username, /#/profile/:username/favorites )
-    - Show basic user info
-    - List of messages populated from author's created messages or author's favorited messages
+Ouvrir le navigateur sur http://localhost:4200/cavus
