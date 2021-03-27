@@ -80,7 +80,8 @@
                 ></textarea>
               </div>
               <div class="card-footer">
-                <img [alt]="'profile-picture' | translate" [src]="currentUser.image" class="comment-author-img" />
+                <img *ngIf="currentUser.image" [alt]="'profile-picture' | translate" [src]="currentUser.image"
+                     class="comment-author-img" />
                 <button class="btn btn-sm btn-primary" type="submit">
                   {{ 'post-comment' | translate }}
                 </button>
@@ -89,12 +90,11 @@
           </form>
         </div>
 
-        <app-message-comment
-          (deleteComment)="onDeleteComment(comment)"
-          *ngFor="let comment of comments"
-          [comment]="comment"
-        >
-        </app-message-comment>
+        <div [@fade]="'in'"
+             *ngFor="let comment of comments">
+          <app-message-comment (deleteComment)="onDeleteComment(comment)" [comment]="comment">
+          </app-message-comment>
+        </div>
       </div>
     </div>
   </div>

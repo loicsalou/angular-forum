@@ -1,18 +1,11 @@
-<div class="home-page">
-  <div *appShowAuthed="false" class="banner">
-    <div class="container">
-      <h1 class="logo-font">{{ 'forum' | translate }}</h1>
-      <p>{{ 'forum-title' | translate }}</p>
-    </div>
-  </div>
-
+<div class="home-page" *ngIf="state$ | async as state">
   <div class="container page">
     <div class="row">
       <div class="col-md-9">
         <div class="feed-toggle">
           <ul class="nav nav-pills outline-active">
             <li class="nav-item">
-              <a (click)="setListType('feed')" [ngClass]="{ active: state.currentFilters?.type === 'feed' }"
+              <a (click)="setListType('feed')" [ngClass]="{ active: state?.currentFilters?.type === 'feed' }"
                  class="nav-link">
                 {{ 'your-feed' | translate }}
               </a>
@@ -20,7 +13,7 @@
             <li class="nav-item">
               <a
                 (click)="setListType('all')"
-                [ngClass]="{ active: state.currentFilters?.type === 'all'}"
+                [ngClass]="{ active: state?.currentFilters?.type === 'all'}"
                 class="nav-link"
               >
                 {{ 'global-feed' | translate }}
@@ -30,7 +23,7 @@
         </div>
 
         <div class="list-messages">
-          <app-message-list [config]="state.currentFilters" [limit]="10"></app-message-list>
+          <app-message-list [config]="state?.currentFilters" [limit]="10"></app-message-list>
         </div>
       </div>
 
@@ -40,7 +33,7 @@
 
           <div class="tag-list">
             <a (click)="setTag(tag)" *ngFor="let tag of state.tags" class="tag-default tag-pill"
-               [ngClass]="tag===state.currentFilters?.filters?.tag ? 'active' : ''">
+               [ngClass]="tag===state?.currentFilters?.filters?.tag ? 'active' : ''">
               {{ tag }}
             </a>
           </div>

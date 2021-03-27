@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 
 import { User, UserService } from '../../core';
 import { TranslateService } from '@ngx-translate/core';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-layout-header',
@@ -11,6 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class HeaderComponent implements OnInit {
   currentUser: User;
   @Input() langs: string[];
+  profileHref: string;
 
   constructor(private userService: UserService, private readonly translateService: TranslateService) {}
 
@@ -23,8 +25,9 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.currentUser.subscribe((userData) => {
-      this.currentUser = userData;
+    this.userService.state$.subscribe((state) => {
+      this.currentUser = state.user;
     });
+    this.profileHref = environment.cavus_url + '/' + this.currentLang + '/modifdonnees.php';
   }
 }

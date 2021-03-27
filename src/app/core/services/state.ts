@@ -1,6 +1,7 @@
-import { MessageListConfig } from '../models';
+import { MessageListConfig, User } from '../models';
 
 export interface State {
+  user: User;
   currentTag?: string;
   tags?: string[];
   currentMessage?: string;

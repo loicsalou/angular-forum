@@ -1,26 +1,29 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Message, MessagesService, UserService } from '../../core';
-import { of } from 'rxjs';
-import { concatMap, tap } from 'rxjs/operators';
+import { of, Subject } from 'rxjs';
+import { concatMap, map, takeUntil, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-favorite-button',
   templateUrl: './favorite-button.component.html',
 })
-export class FavoriteButtonComponent {
-  constructor(private messagesService: MessagesService, private router: Router, private userService: UserService) {}
-
+export class FavoriteButtonComponent implements OnDestroy {
   @Input() message: Message;
   @Output() toggle = new EventEmitter<boolean>();
   isSubmitting = false;
+  private destroyed$ = new Subject<void>();
+
+  constructor(private messagesService: MessagesService, private router: Router, private userService: UserService) {}
 
   toggleFavorite() {
     this.isSubmitting = true;
 
-    this.userService.isAuthenticated
+    this.userService.state$
       .pipe(
+        takeUntil(this.destroyed$),
+        map((state) => !!state.user),
         concatMap((authenticated) => {
           // Not authenticated? Push to login screen
           if (!authenticated) {
@@ -55,5 +58,10 @@ export class FavoriteButtonComponent {
         })
       )
       .subscribe();
+  }
+
+  ngOnDestroy() {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 }

@@ -13,7 +13,7 @@ export class CommentsService {
   add(slug, payload): Observable<Comment> {
     return this.apiService
       .post(`/messages/${slug}/comments`, { comment: { body: payload } })
-      .pipe(map((data) => data.comment));
+      .pipe(map((comment: any) => ({ ...comment.comment, id: parseInt(comment.comment.id) })));
   }
 
   getAll(slug): Observable<Comment[]> {
@@ -21,6 +21,6 @@ export class CommentsService {
   }
 
   destroy(commentId, messageSlug) {
-    return this.apiService.delete(`/articles/${messageSlug}/comments/${commentId}`);
+    return this.apiService.delete(MESSAGE_PATH + `/${messageSlug}/comments/${commentId}`);
   }
 }

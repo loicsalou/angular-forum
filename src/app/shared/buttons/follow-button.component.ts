@@ -1,18 +1,19 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Profile, ProfilesService, UserService } from '../../core';
-import { concatMap, tap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { concatMap, map, takeUntil, tap } from 'rxjs/operators';
+import { of, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-follow-button',
   templateUrl: './follow-button.component.html',
 })
-export class FollowButtonComponent {
+export class FollowButtonComponent implements OnDestroy {
   @Input() profile: Profile;
   @Output() toggle = new EventEmitter<boolean>();
   isSubmitting = false;
+  private destroyed$ = new Subject<void>();
 
   constructor(private profilesService: ProfilesService, private router: Router, private userService: UserService) {}
 
@@ -20,8 +21,10 @@ export class FollowButtonComponent {
     this.isSubmitting = true;
     // TODO: remove nested subscribes, use mergeMap
 
-    this.userService.isAuthenticated
+    this.userService.state$
       .pipe(
+        takeUntil(this.destroyed$),
+        map((state) => !!state.user),
         concatMap((authenticated) => {
           // Not authenticated? Push to login screen
           if (!authenticated) {
@@ -56,5 +59,10 @@ export class FollowButtonComponent {
         })
       )
       .subscribe();
+  }
+
+  ngOnDestroy() {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 }

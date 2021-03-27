@@ -45,7 +45,7 @@ export class MessagesService {
 
       // Otherwise, create a new message
     } else {
-      return this.apiService.post(MESSAGE_PATH + '/', { article: message }).pipe(map((data) => data.message));
+      return this.apiService.post(MESSAGE_PATH, { message: message }).pipe(map((data) => data.message));
     }
   }
 

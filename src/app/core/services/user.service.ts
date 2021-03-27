@@ -1,25 +1,22 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Observable, of, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 
 import { ApiService } from './api.service';
 import { MessageListConfig, User } from '../models';
-import { catchError, distinctUntilChanged, map } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { State } from './State';
 import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class UserService implements OnDestroy {
   currentState: State = {
+    user: null,
     currentFilters: {
       type: 'all',
       filters: {},
     },
   };
   state$ = new BehaviorSubject(this.currentState);
-  private currentUserSubject = new BehaviorSubject<User>({} as User);
-  currentUser = this.currentUserSubject.asObservable().pipe(distinctUntilChanged());
-  private isAuthenticatedSubject = new ReplaySubject<boolean>(1);
-  isAuthenticated = this.isAuthenticatedSubject.asObservable();
 
   constructor(private apiService: ApiService) {}
 
@@ -27,55 +24,70 @@ export class UserService implements OnDestroy {
     this.state$.complete();
   }
 
-  setMessageListConfig(state: State): void {
-    this.currentState = { ...this.currentState, ...state };
+  setMessageListConfig(messageListConfig: MessageListConfig): void {
+    this.currentState = { ...this.currentState, currentFilters: messageListConfig };
     this.state$.next(this.currentState);
   }
 
   checkAuth(): Observable<User | null> {
     // vérifie le statut d'authentification dans cavus
     return this.apiService.get('/logged-user').pipe(
-      map((data) => {
-        this.setAuth(data.user);
-        return data.user;
-      }),
+      map((data) => data.user),
+      // TODO pas de username retourné par le REST de Manu. Voir si on peut récupérer ça
+      // TODO attention le username est aussi utilisé ailleurs pour matcher avec l'auteur d'un message
+      tap((user) => this.setUser({ ...user, username: user.login })),
       catchError((err) => {
-        this.purgeAuth();
-        window.location.href = environment.cavus_url;
+        this.redirectToCavusLogin();
         return of(null);
       })
     );
   }
 
-  setAuth(user: User) {
-    this.currentUserSubject.next(user);
-    // Set isAuthenticated to true
-    this.isAuthenticatedSubject.next(true);
-  }
-
-  purgeAuth() {
-    // Set current user to an empty object
-    this.currentUserSubject.next({} as User);
-    // Set auth status to false
-    this.isAuthenticatedSubject.next(false);
-  }
-
-  getCurrentUser(): User {
-    return this.currentUserSubject.value;
-  }
-
-  // Update the user on the server (email, pass, etc)
-  update(user): Observable<User> {
-    return this.apiService.put('/user', { user }).pipe(
-      map((data) => {
-        // Update the currentUser observable
-        this.currentUserSubject.next(data.user);
-        return data.user;
-      })
-    );
-  }
-
   handleNotAuth() {
-    alert('authentification requise');
+    confirm('authentification requise').valueOf();
+    this.redirectToCavusLogin();
+  }
+
+  setListType(type: string) {
+    this.currentState = {
+      ...this.currentState,
+      currentFilters: {
+        ...this.currentState.currentFilters,
+        filters: {
+          ...this.currentState.currentFilters.filters,
+          author: this.currentState.user.login,
+        },
+        type: type,
+      },
+    };
+    if (type != 'feed') {
+      delete this.currentState.currentFilters.filters.author;
+    }
+    this.state$.next(this.currentState);
+  }
+
+  setTag(tag: string) {
+    this.currentState = {
+      ...this.currentState,
+      currentFilters: {
+        ...this.currentState.currentFilters,
+        filters: { ...this.currentState.currentFilters.filters },
+      },
+    };
+    if (tag === this.currentState.currentFilters.filters.tag) {
+      delete this.currentState.currentFilters.filters.tag;
+    } else {
+      this.currentState.currentFilters.filters.tag = tag;
+    }
+    this.state$.next(this.currentState);
+  }
+
+  private redirectToCavusLogin() {
+    window.location.href = environment.cavus_url;
+  }
+
+  private setUser(user: User) {
+    this.currentState = { ...this.currentState, user: user };
+    this.state$.next(this.currentState);
   }
 }
