@@ -1,8 +1,7 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
-import { AuthModule } from './auth/auth.module';
 import { HomeModule } from './home/home.module';
 import { FooterComponent, HeaderComponent, SharedModule } from './shared';
 import { AppRoutingModule } from './app-routing.module';
@@ -10,6 +9,14 @@ import { CoreModule } from './core/core.module';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
+import { PreinitService } from './core/services/preinit.service';
+import { UserService } from './core';
+
+export function initializeApp(appInitService: PreinitService) {
+  return (): Promise<any> => {
+    return appInitService.init();
+  };
+}
 
 @NgModule({
   declarations: [AppComponent, FooterComponent, HeaderComponent],
@@ -18,7 +25,6 @@ import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
     CoreModule,
     SharedModule,
     HomeModule,
-    AuthModule,
     AppRoutingModule,
     TranslateModule.forRoot({
       loader: {
@@ -29,7 +35,7 @@ import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
       },
     }),
   ],
-  providers: [],
+  providers: [{ provide: APP_INITIALIZER, useFactory: initializeApp, deps: [PreinitService], multi: true }],
   bootstrap: [AppComponent],
 })
 export class AppModule {

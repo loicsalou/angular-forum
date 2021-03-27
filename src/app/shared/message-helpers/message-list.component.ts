@@ -1,15 +1,22 @@
 import { Component, Input } from '@angular/core';
 
 import { Message, MessageListConfig, MessagesService } from '../../core';
+
 @Component({
   selector: 'app-message-list',
   styleUrls: ['message-list.component.css'],
   templateUrl: './message-list.component.html',
 })
 export class MessageListComponent {
+  @Input() limit: number;
+  query: MessageListConfig;
+  results: Message[];
+  loading = false;
+  currentPage = 1;
+  totalPages: Array<number> = [1];
+
   constructor(private messagesService: MessagesService) {}
 
-  @Input() limit: number;
   @Input()
   set config(config: MessageListConfig) {
     if (config) {
@@ -18,12 +25,6 @@ export class MessageListComponent {
       this.runQuery();
     }
   }
-
-  query: MessageListConfig;
-  results: Message[];
-  loading = false;
-  currentPage = 1;
-  totalPages: Array<number> = [1];
 
   setPageTo(pageNumber) {
     this.currentPage = pageNumber;

@@ -1,6 +1,6 @@
 <div class="message-page">
   <div class="banner">
-    <div class="container">
+    <div class="container" *ngIf="message">
       <h1>{{ message.title }}</h1>
 
       <app-message-meta [message]="message">
@@ -18,7 +18,7 @@
           <app-follow-button (toggle)="onToggleFollowing($event)" [profile]="message.author"> </app-follow-button>
 
           <app-favorite-button (toggle)="onToggleFavorite($event)" [message]="message">
-            {{ (message.favorited ? 'unfavorite' : 'favorite') | translate }} {{ 'message' | translate }}
+            {{ (message.favorited ? 'unfavorite' : 'favorite') | translate }}
             <span class="counter">({{ message.favoritesCount }})</span>
           </app-favorite-button>
         </span>
@@ -57,7 +57,7 @@
           <app-follow-button (toggle)="onToggleFollowing($event)" [profile]="message.author"> </app-follow-button>
 
           <app-favorite-button (toggle)="onToggleFavorite($event)" [message]="message">
-            {{ (message.favorited ? 'unfavorite' : 'favorite') | translate }} {{ 'messgae' | translate }}
+            {{ (message.favorited ? 'unfavorite' : 'favorite') | translate }}
             <span class="counter">({{ message.favoritesCount }})</span>
           </app-favorite-button>
         </span>
@@ -65,7 +65,7 @@
     </div>
 
     <div class="row">
-      <div class="col-xs-12 col-md-8 offset-md-2">
+      <div class="col-xs-12">
         <div *appShowAuthed="true">
           <app-list-errors [errors]="commentFormErrors"></app-list-errors>
           <form (ngSubmit)="addComment()" class="card comment-form">
@@ -87,11 +87,6 @@
               </div>
             </fieldset>
           </form>
-        </div>
-
-        <div *appShowAuthed="false">
-          <a [routerLink]="['/login']">{{ 'sign-in' | translate }}</a> or
-          <a [routerLink]="['/register']">{{ 'sign-up' | translate }}</a> {{ 'add-comment-to-message' | translate }}
         </div>
 
         <app-message-comment

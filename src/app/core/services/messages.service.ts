@@ -8,44 +8,40 @@ import { map } from 'rxjs/operators';
 
 export const MESSAGE_PATH = '/messages';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class MessagesService {
   constructor(private apiService: ApiService) {}
 
   query(config: MessageListConfig): Observable<{ messages: Message[]; messagesCount: number }> {
     // Convert any filters over to Angular's URLSearchParams
-    const params = { offset: '0', limit: '10', tag: 'loire' };
+    const params = { offset: '0', limit: '10' };
+    if (config.type === 'feed') {
+      params['userOnly'] = true;
+    }
 
     Object.keys(config.filters).forEach((key) => {
       params[key] = '' + config.filters[key];
     });
 
-    return this.apiService
-      .get(MESSAGE_PATH + (config.type === 'feed' ? '/feed' : ''), new HttpParams({ fromObject: params }))
-      .pipe(
-        map((result) => {
-          return { messages: result.messages, messagesCount: result.articlesCount };
-        })
-      );
-  }
-
-  get(slug): Observable<Message> {
-    return this.apiService.get(MESSAGE_PATH + '/' + slug).pipe(
-      map((data) => data.article),
-      map((article) => article) // extraire article devrait suffire en attendant cavus
+    return this.apiService.get(MESSAGE_PATH, new HttpParams({ fromObject: params })).pipe(
+      map((result) => {
+        return { messages: result.messages, messagesCount: result.messagesCount || result.messages?.length || 0 };
+      })
     );
   }
 
-  destroy(slug) {
+  get(slug): Observable<Message> {
+    return this.apiService.get(MESSAGE_PATH + '/' + slug).pipe(map((data) => data.message));
+  }
+
+  destroy(slug: string) {
     return this.apiService.delete(MESSAGE_PATH + '/' + slug);
   }
 
-  save(message): Observable<Message> {
+  save(message: Message): Observable<Message> {
     // If we're updating an existing message
     if (message.slug) {
-      return this.apiService
-        .put(MESSAGE_PATH + '/' + message.slug, { article: message })
-        .pipe(map((data) => data.message));
+      return this.apiService.put(MESSAGE_PATH + '/' + message.slug, message.body).pipe(map((data) => data.message));
 
       // Otherwise, create a new message
     } else {

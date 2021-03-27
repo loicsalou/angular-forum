@@ -5,6 +5,7 @@ import { Comment, User, UserService } from '../core';
 @Component({
   selector: 'app-message-comment',
   templateUrl: './message-comment.component.html',
+  styleUrls: ['./message-comment.component.scss'],
 })
 export class MessageCommentComponent implements OnInit {
   constructor(private userService: UserService) {}

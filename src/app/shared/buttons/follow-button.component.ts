@@ -10,11 +10,11 @@ import { of } from 'rxjs';
   templateUrl: './follow-button.component.html',
 })
 export class FollowButtonComponent {
-  constructor(private profilesService: ProfilesService, private router: Router, private userService: UserService) {}
-
   @Input() profile: Profile;
   @Output() toggle = new EventEmitter<boolean>();
   isSubmitting = false;
+
+  constructor(private profilesService: ProfilesService, private router: Router, private userService: UserService) {}
 
   toggleFollowing() {
     this.isSubmitting = true;
@@ -25,7 +25,7 @@ export class FollowButtonComponent {
         concatMap((authenticated) => {
           // Not authenticated? Push to login screen
           if (!authenticated) {
-            this.router.navigateByUrl('/login');
+            this.userService.handleNotAuth();
             return of(null);
           }
 

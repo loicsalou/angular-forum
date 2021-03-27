@@ -3,12 +3,11 @@ import { environment } from '../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 
-import { JwtService } from './jwt.service';
 import { catchError } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ApiService {
-  constructor(private http: HttpClient, private jwtService: JwtService) {}
+  constructor(private http: HttpClient) {}
 
   get(path: string, params: HttpParams = new HttpParams()): Observable<any> {
     return this.http.get(`${environment.api_url}${path}`, { params }).pipe(catchError(this.formatErrors));

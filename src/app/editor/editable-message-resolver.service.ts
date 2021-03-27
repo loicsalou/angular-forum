@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { Message, MessagesService, UserService } from '../core';
 import { catchError, map } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class EditableMessageResolver implements Resolve<Message> {
   constructor(private messagesService: MessagesService, private router: Router, private userService: UserService) {}
 

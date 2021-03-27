@@ -5,3 +5,7 @@
 .tag-pill {
   cursor: pointer;
 }
+
+div.list-messages {
+  padding-top: 1.5rem;
+}

@@ -24,7 +24,7 @@ export class FavoriteButtonComponent {
         concatMap((authenticated) => {
           // Not authenticated? Push to login screen
           if (!authenticated) {
-            this.router.navigateByUrl('/login');
+            this.userService.handleNotAuth();
             return of(null);
           }
 

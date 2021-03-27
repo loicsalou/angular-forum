@@ -1,3 +1,13 @@
+header {
+  overflow: hidden;
+  background-color: #F1F1F1;
+  padding: 20px 10px;
+  background-image: url(../../../assets/img/layout/header-leaves-background.png);
+  background-position: top left;
+  background-repeat: repeat-x;
+  height: 130px;
+}
+
 li.nav-item {
   &:hover {
     cursor: pointer;

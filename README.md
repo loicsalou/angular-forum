@@ -48,9 +48,6 @@ The example application is a social blogging site (i.e. a Medium.com clone). You
     - List of tags
     - List of messages pulled from either Feed, Global, or by Tag
     - Pagination for list of messages
-- Sign in/Sign up pages (URL: /#/login, /#/register )
-    - Uses JWT (store the token in localStorage)
-    - Authentication can be easily switched to session/cookie based
 - Settings page (URL: /#/settings )
 - Editor page to create/edit messages (URL: /#/editor, /#/editor/message-slug-here )
 - Message page (URL: /#/message/message-slug-here )

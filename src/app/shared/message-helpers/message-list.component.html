@@ -14,8 +14,7 @@
       (click)="setPageTo(pageNumber)"
       *ngFor="let pageNumber of totalPages"
       [ngClass]="{ active: pageNumber === currentPage }"
-      class="page-item"
-    >
+      class="page-item">
       <a class="page-link">{{ pageNumber }}</a>
     </li>
   </ul>
