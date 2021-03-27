@@ -12,6 +12,9 @@ li.nav-item {
   &:hover {
     cursor: pointer;
   }
+  &.message {
+    width: 140px;
+  }
 }
 
 li.lang > a {
@@ -20,6 +23,6 @@ li.lang > a {
   width: 32px;
 
   &.active {
-    color: black;
+    font-weight: bolder!important;
   }
 }

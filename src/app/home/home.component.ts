@@ -1,57 +1,61 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { MessageListConfig, TagsService, UserService } from '../core';
+import { TagsService, UserService } from '../core';
+import { of, Subject } from 'rxjs';
+import { State } from '../core/services/State';
+import { catchError, map, switchMap, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home-page',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'],
+  styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit {
-  constructor(private router: Router, private tagsService: TagsService, private userService: UserService) {}
-
-  isAuthenticated: boolean;
-  listConfig: MessageListConfig = {
-    type: 'all',
-    filters: {},
-  };
+export class HomeComponent implements OnInit, OnDestroy {
+  state: State;
   tags: Array<string> = [];
   tagsLoaded = false;
+  private destroyed$ = new Subject<void>();
+
+  constructor(private router: Router, private tagsService: TagsService, private userService: UserService) {}
 
   ngOnInit() {
-    this.userService.isAuthenticated.subscribe((authenticated) => {
-      this.isAuthenticated = authenticated;
-
-      // set the message list accordingly
-      if (authenticated) {
-        this.setListTo('feed');
-      } else {
-        this.setListTo('all');
-      }
-    });
-
-    this.tagsService.getAll().subscribe(
-      (tags) => {
-        this.tags = tags;
-        this.tagsLoaded = true;
-      },
-      (err) => {
-        console.error(err);
-        this.tagsLoaded = true;
-        this.tags = [];
-      }
-    );
+    this.userService.state$
+      .pipe(
+        takeUntil(this.destroyed$),
+        switchMap((state) => {
+          return state.tags
+            ? of(state)
+            : this.tagsService.getAll().pipe(
+                map((tags) => ({ ...state, tags: tags })),
+                catchError((err) => {
+                  console.error(err);
+                  this.tagsLoaded = true;
+                  return of({ ...state, tags: [] });
+                })
+              );
+        })
+      )
+      .subscribe((state) => (this.state = state));
   }
 
-  setListTo(type: string = '', filters: Object = {}) {
-    // If feed is requested but user is not authenticated, redirect to login
-    if (type === 'feed' && !this.isAuthenticated) {
-      this.userService.handleNotAuth();
-      return;
-    }
+  ngOnDestroy() {
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
 
-    // Otherwise, set the list object
-    this.listConfig = { type, filters };
+  setListType(type: string) {
+    this.setState({ ...this.state, currentFilters: { ...this.state.currentFilters, type: type } });
+  }
+
+  setState(state: State) {
+    this.userService.setMessageListConfig(state);
+  }
+
+  setTag(tag: string) {
+    this.setState({
+      ...this.state,
+      currentFilters: { ...this.state.currentFilters, filters: { ...this.state.currentFilters.filters, tag: tag } },
+    });
   }
 }

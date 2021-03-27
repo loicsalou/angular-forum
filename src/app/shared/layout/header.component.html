@@ -13,18 +13,9 @@
         </a>
       </li>
 
-      <li class="nav-item">
+      <li class="nav-item message">
         <a class="nav-link" routerLink="/editor" routerLinkActive="active">
           <em class="ion-compose"></em>&nbsp;{{ 'new-message' | translate }}
-        </a>
-      </li>
-
-      <li class="nav-item">
-        <a [routerLink]="['/profile', currentUser.username]" class="nav-link" routerLinkActive="active">
-          <img *ngIf="currentUser.image"
-               [alt]="'profile-picture' | translate"
-               [src]="currentUser.image" class="user-pic" />
-          {{ currentUser.username }}
         </a>
       </li>
     </ul>

@@ -9,7 +9,12 @@ import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class UserService implements OnDestroy {
-  currentState: State = {};
+  currentState: State = {
+    currentFilters: {
+      type: 'all',
+      filters: {},
+    },
+  };
   state$ = new BehaviorSubject(this.currentState);
   private currentUserSubject = new BehaviorSubject<User>({} as User);
   currentUser = this.currentUserSubject.asObservable().pipe(distinctUntilChanged());
@@ -22,8 +27,8 @@ export class UserService implements OnDestroy {
     this.state$.complete();
   }
 
-  setMessageListConfig(cfg: MessageListConfig): void {
-    this.currentState = { ...this.currentState, currentFilters: cfg };
+  setMessageListConfig(state: State): void {
+    this.currentState = { ...this.currentState, ...state };
     this.state$.next(this.currentState);
   }
 

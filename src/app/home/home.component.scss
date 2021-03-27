@@ -1,0 +1,18 @@
+@import '../../style/variables';
+
+.nav-link {
+  cursor: pointer;
+}
+
+.tag-pill {
+  cursor: pointer;
+}
+
+div.list-messages {
+  padding-top: 1.5rem;
+}
+
+a.tag-default.active {
+  background-color: $cavus-text-color;
+  color: white;
+}
