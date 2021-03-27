@@ -1,15 +1,40 @@
+@import "../../../style/variables";
+
+header {
+  overflow: hidden;
+  background-color: #F1F1F1;
+  padding: 20px 10px;
+  background-image: url(../../../assets/img/layout/header-leaves-background.png);
+  background-position: top left;
+  background-repeat: repeat-x;
+  height: 130px;
+}
+
+header > nav > div > a.navbar-brand {
+  font-size: xxx-large!important;
+}
+
 li.nav-item {
   &:hover {
     cursor: pointer;
+  }
+  &.message {
+    width: 140px;
   }
 }
 
 li.lang > a {
   height: 32px;
-  text-align: center;
+  text-align: left;
   width: 32px;
 
   &.active {
-    color: black;
+    font-weight: bolder!important;
   }
+}
+
+a.username {
+  color: $cavus-text-color;
+  display: block;
+  font-weight: bolder!important;
 }

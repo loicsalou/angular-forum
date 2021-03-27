@@ -1,0 +1,9 @@
+@import "../../../style/variables";
+a.preview-link {
+  display: flex;
+  flex-direction: column;
+}
+
+div.message-preview {
+  border-bottom: thin solid $cavus-text-color;
+}

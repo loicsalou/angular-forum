@@ -1,0 +1,6 @@
+@import "src/style/variables";
+
+img.comment-author-img {
+  max-width: $profile-img-width;
+  min-width: $profile-img-width;
+}

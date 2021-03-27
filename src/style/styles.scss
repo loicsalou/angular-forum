@@ -1,0 +1,38 @@
+@import '_variables.scss';
+
+body {
+  margin: 8px;
+}
+
+a, .navbar-brand, .nav-pills.outline-active .nav-link.active, .btn-outline-primary {
+  color: $cavus-text-color !important;
+}
+
+.nav-pills.outline-active .nav-link.active {
+  border-bottom: 2px solid $cavus-text-color !important;
+}
+
+.btn-outline-primary, .btn-primary {
+  border-color: $cavus-text-color;
+}
+
+
+.btn-primary, .btn-primary:active, .btn-primary:active:hover, .btn-primary:focus, .btn-primary:active:focus, .btn-primary:hover, .btn-primary.focus,
+.btn-outline-primary, .btn-outline-primary:active, .btn-outline-primary:active:focus, .btn-outline-primary:focus, .btn-outline-primary:hover,
+.btn-outline, .btn-outline:active, .btn-outline:focus, .btn-outline:active:focus, .btn-outline:hover {
+  background-color: $cavus-text-color;
+  border-color: $cavus-text-color;
+  color: white !important;
+}
+
+li.page-item.active, .page-item.active .page-link:focus, .page-item.active .page-link:hover {
+  a {
+    background-color: $cavus-text-color !important;
+    border-color: $cavus-text-color !important;
+    color: white !important;
+  }
+}
+
+div.banner {
+  background-color: #d0d0d0;
+}

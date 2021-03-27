@@ -1,15 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { MessagesService, Comment, CommentsService, User, UserService } from '../core';
+import { Comment, CommentsService, MessagesService, User, UserService } from '../core';
 import { Message } from '../core/models/message.model';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { State } from '../core/services/state';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-message-page',
   templateUrl: './message.component.html',
+  animations: [
+    trigger('fade', [
+      state('in', style({ opacity: 1 })),
+      transition(':enter', [style({ opacity: 0, height: 0 }), animate(200)]),
+      transition(':leave', animate(200, style({ opacity: 0, height: 0 }))),
+    ]),
+  ],
 })
-export class MessageComponent implements OnInit {
+export class MessageComponent implements OnInit, OnDestroy {
   message: Message;
   currentUser: User;
   canModify: boolean;
@@ -18,6 +29,7 @@ export class MessageComponent implements OnInit {
   commentFormErrors;
   isSubmitting = false;
   isDeleting = false;
+  private destroyed$ = new Subject<void>();
 
   constructor(
     private route: ActivatedRoute,
@@ -37,11 +49,15 @@ export class MessageComponent implements OnInit {
     });
 
     // Load the current user's data
-    this.userService.currentUser.subscribe((userData: User) => {
-      this.currentUser = userData;
-
+    this.userService.state$.pipe(takeUntil(this.destroyed$)).subscribe((state: State) => {
+      this.currentUser = state.user;
       this.canModify = this.currentUser.username === this.message.author.username;
     });
+  }
+
+  ngOnDestroy() {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 
   onToggleFavorite(favorited: boolean) {

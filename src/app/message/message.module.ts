@@ -7,6 +7,7 @@ import { SharedModule } from '../shared';
 import { MessageRoutingModule } from './message-routing.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { MessageResolver } from './message-resolver.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   imports: [SharedModule, MessageRoutingModule, TranslateModule.forChild()],

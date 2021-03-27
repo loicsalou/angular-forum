@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { User, UserService, Profile } from '../core';
 import { concatMap, tap } from 'rxjs/operators';
+import { State } from '../core/services/state';
 
 @Component({
   selector: 'app-profile-page',
@@ -21,9 +22,9 @@ export class ProfileComponent implements OnInit {
         concatMap((data: { profile: Profile }) => {
           this.profile = data.profile;
           // Load the current user's data.
-          return this.userService.currentUser.pipe(
-            tap((userData: User) => {
-              this.currentUser = userData;
+          return this.userService.state$.pipe(
+            tap((state: State) => {
+              this.currentUser = state.user;
               this.isUser = this.currentUser.username === this.profile.username;
             })
           );

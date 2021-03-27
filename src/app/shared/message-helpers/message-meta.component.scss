@@ -1,0 +1,19 @@
+@import "src/style/variables";
+
+div.message-meta {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  width: 100%;
+}
+
+div.info {
+  flex-grow: 1;
+}
+
+img {
+  flex-grow: 0;
+  padding: 5px;
+  min-width: $profile-img-width;
+  max-width: $profile-img-width;
+}

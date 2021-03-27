@@ -6,7 +6,7 @@ import { MessagesService, UserService } from '../core';
 import { catchError } from 'rxjs/operators';
 import { Message } from '../core/models/message.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class MessageResolver implements Resolve<Message> {
   constructor(private messagesService: MessagesService, private router: Router, private userService: UserService) {}
 

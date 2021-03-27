@@ -1,37 +1,30 @@
-<div class="home-page">
-  <div *appShowAuthed="false" class="banner">
-    <div class="container">
-      <h1 class="logo-font">{{ 'forum' | translate }}</h1>
-      <p>{{ 'forum-title' | translate }}</p>
-    </div>
-  </div>
-
+<div class="home-page" *ngIf="state$ | async as state">
   <div class="container page">
     <div class="row">
       <div class="col-md-9">
         <div class="feed-toggle">
           <ul class="nav nav-pills outline-active">
             <li class="nav-item">
-              <a (click)="setListTo('feed')" [ngClass]="{ active: listConfig.type === 'feed' }" class="nav-link">
+              <a (click)="setListType('feed')" [ngClass]="{ active: state?.currentFilters?.type === 'feed' }"
+                 class="nav-link">
                 {{ 'your-feed' | translate }}
               </a>
             </li>
             <li class="nav-item">
               <a
-                (click)="setListTo('all')"
-                [ngClass]="{ active: listConfig.type === 'all' && !listConfig.filters.tag }"
+                (click)="setListType('all')"
+                [ngClass]="{ active: state?.currentFilters?.type === 'all'}"
                 class="nav-link"
               >
                 {{ 'global-feed' | translate }}
               </a>
             </li>
-            <li [hidden]="!listConfig.filters.tag" class="nav-item">
-              <a class="nav-link active"> <em class="ion-pound"></em> {{ listConfig.filters.tag }} </a>
-            </li>
           </ul>
         </div>
 
-        <app-message-list [config]="listConfig" [limit]="10"></app-message-list>
+        <div class="list-messages">
+          <app-message-list [config]="state?.currentFilters" [limit]="10"></app-message-list>
+        </div>
       </div>
 
       <div class="col-md-3">
@@ -39,7 +32,8 @@
           <p>{{ 'popular-tags' | translate }}</p>
 
           <div class="tag-list">
-            <a (click)="setListTo('all', { tag: tag })" *ngFor="let tag of tags" class="tag-default tag-pill">
+            <a (click)="setTag(tag)" *ngFor="let tag of state.tags" class="tag-default tag-pill"
+               [ngClass]="tag===state?.currentFilters?.filters?.tag ? 'active' : ''">
               {{ tag }}
             </a>
           </div>
